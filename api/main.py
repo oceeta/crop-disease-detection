@@ -5,6 +5,7 @@ import numpy as np
 from io import BytesIO
 from PIL import Image
 import tensorflow as tf
+import os
 
 app = FastAPI()
 
@@ -21,7 +22,12 @@ app.add_middleware(
     allow_headers=["*"],  # Headers allowed
 )
 
-MODEL = tf.keras.models.load_model("/home/osita/repos/crop-disease-detection/models/2.keras")
+dirname = os.path.dirname(__file__)
+filename = os.path.join(dirname, "../models/2.keras")
+
+
+MODEL = tf.keras.models.load_model(filename)
+
 CLASS_NAMES = ['Bell Pepper Bacterial Spot',
  'Bell Pepper Healthy',
  'Potato Early Blight',
