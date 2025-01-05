@@ -1,4 +1,5 @@
 from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import numpy as np
 from io import BytesIO
@@ -6,6 +7,20 @@ from PIL import Image
 import tensorflow as tf
 
 app = FastAPI()
+
+origins = [
+    "http://127.0.0.1:5500",  # Your local frontend URL
+    "http://localhost:5500",  # Alternate local frontend
+    "http://your-deployed-frontend.com"  # Add your deployed frontend URL when applicable
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Origins that are allowed to make requests
+    allow_credentials=True,
+    allow_methods=["*"],  # HTTP methods allowed (e.g., GET, POST)
+    allow_headers=["*"],  # Headers allowed
+)
 
 MODEL = tf.keras.models.load_model("/home/osita/repos/crop-disease-detection/models/2.keras")
 CLASS_NAMES = ['Bell Pepper Bacterial Spot',
